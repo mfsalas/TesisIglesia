@@ -1,0 +1,22 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+	Alta Matrimonio
+{% endblock %}
+
+{% block content %}
+<div class="mb-2">
+<form method="post" action="{% url 'matrimonio:matrimonio_crear' %}">
+	{% csrf_token %}
+	{% include 'includes/form.html' %}
+	<button class="btn btn-default" type="submit">Registrar</button>
+	<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+
+
+
+</form>
+</div>
+{% endblock %}
+
+{% block extrajs %}
+{% endblock %}

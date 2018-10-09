@@ -1,0 +1,48 @@
+{% extends 'base/base.html' %}
+{% block title %}
+	Listado de Unidades de Medida
+{% endblock %}
+
+{% block content %}
+
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<td>Nombre Unidad de Medida</td>
+
+		</tr>
+	</thead>
+	<tbody>
+		{% if object_list %}
+		{% for p in object_list %}
+		<tr>
+			<td>{{ p.nombre_unidad }}</td>
+
+
+			<td>
+				<a class="btn btn-primary" href="{% url 'unidad_de_medida:unidad_de_medida_editar' p.id%}">Editar</a>
+				<a class="btn btn-danger" href="{% url 'unidad_de_medida:unidad_de_medida_eliminar' p.id%}">Eliminar</a>
+			</td>
+		</tr>
+		{% endfor %}
+
+		{% else %}
+		<h1>No hay Unidades de Medida Registradas</h1>
+		{% endif %}
+	</tbody>
+</table>
+<ul class="pager">
+	<li>
+		{% if page_obj.has_previous %}
+       	 <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+
+		{% endif %}
+  </li>
+	<li>
+		{% if page_obj.has_next %}
+     	 <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+
+    	{% endif %}
+  </li>
+</ul>
+{% endblock%}

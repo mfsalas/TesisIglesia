@@ -1,0 +1,71 @@
+{% extends 'base/base.html' %}
+{% block title %}
+	Listado de Movimientos
+{% endblock %}
+
+{% block content %}
+
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<td>Fecha Movimiento</td>
+			<td>Tipo Movimiento</td>
+			<td>Clase</td>
+			<td>Monto</td>
+			<td>Categoria</td>
+			<td>Descripcion</td>
+			<td>Autor</td>
+			<td>Evento</td>
+			<td>Matrimonio</td>
+			<td>Ministerio</td>
+		</tr>
+	</thead>
+	<tbody>
+		{% if object_list %}
+		{% for p in object_list %}
+		<tr>
+			<td>{{ p.fecha_movimiento }}</td>
+			<td>{{ p.tipo_movimiento }}</td>
+			<td>{{ p.clase_movimiento }}</td>
+			<td>{{ p.monto_movimiento }}</td>
+			<td>{{ p.id_categoria.nombre_categoria }}</td>
+      <td>{{ p.descripcion_movimiento }}</td>
+			<td>{{ p.id_persona.nombre }} {{ p.id_persona.apellido_persona }}</td>
+			<td>{{ p.id_evento.descripcion_evento }} {{ p.id_evento.fecha_evento }}</td>
+			<td>{{ p.id_matrimonio.apellido_matrimonio }}</td>
+			<td>{{ p.id_ministerio.nombre_ministerio }}</td>
+			<td>
+			<ul>{% for categoria in movimiento_dinero.id_movimiento %}
+				<li>
+					{{categoria.nombre_categoria}}
+				</li>
+				{% endfor %}
+			</ul>
+    		</td>
+			<td>
+				<a class="btn btn-primary" href="{% url 'movimiento:movimiento_editar' p.id%}">Editar</a>
+				<a class="btn btn-danger" href="{% url 'movimiento:movimiento_eliminar' p.id%}">Eliminar</a>
+			</td>
+		</tr>
+		{% endfor %}
+
+		{% else %}
+		<h1>No hay Movimientos Registrados</h1>
+		{% endif %}
+	</tbody>
+</table>
+<ul class="pager">
+	<li>
+		{% if page_obj.has_previous %}
+       	 <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+
+		{% endif %}
+  </li>
+	<li>
+		{% if page_obj.has_next %}
+     	 <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+
+    	{% endif %}
+  </li>
+</ul>
+{% endblock%}

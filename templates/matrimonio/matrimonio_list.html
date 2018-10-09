@@ -1,0 +1,48 @@
+{% extends 'base/base.html' %}
+{% block title %}
+	Listado de Matrimonios
+{% endblock %}
+
+{% block content %}
+
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<td>Apellido Matrimonio</td>
+
+		</tr>
+	</thead>
+	<tbody>
+		{% if object_list %}
+		{% for p in object_list %}
+		<tr>
+			<td>{{ p.apellido_matrimonio }}</td>
+
+
+			<td>
+				<a class="btn btn-primary" href="{% url 'matrimonio:matrimonio_editar' p.id%}">Editar</a>
+				<a class="btn btn-danger" href="{% url 'matrimonio:matrimonio_eliminar' p.id%}">Eliminar</a>
+			</td>
+		</tr>
+		{% endfor %}
+
+		{% else %}
+		<h1>No hay registros de Matrimonio</h1>
+		{% endif %}
+	</tbody>
+</table>
+<ul class="pager">
+	<li>
+		{% if page_obj.has_previous %}
+       	 <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+
+		{% endif %}
+  </li>
+	<li>
+		{% if page_obj.has_next %}
+     	 <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+
+    	{% endif %}
+  </li>
+</ul>
+{% endblock%}

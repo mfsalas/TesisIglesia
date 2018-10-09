@@ -1,0 +1,65 @@
+{% extends 'base/base.html' %}
+{% block title %}
+	Listado de Personas
+{% endblock %}
+
+{% block content %}
+
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<td>Nombre</td>
+			<td>Apellido</td>
+			<td>Fecha de Nacimiento</td>
+			<td>Sexo</td>
+			<td>Celular</td>
+			<td>Direccion</td>
+			<td>Matrimonio</td>
+		</tr>
+	</thead>
+	<tbody>
+		{% if object_list %}
+		{% for p in object_list %}
+		<tr>
+			<td>{{ p.nombre }}</td>
+			<td>{{ p.apellido_persona }}</td>
+			<td>{{ p.fecha_nacimiento }}</td>
+			<td>{{ p.sexo }}</td>
+			<td>{{ p.celular }}</td>
+      <td>{{ p.direccion }}</td>
+			<td>{{ p.id_matrimonio.apellido_matrimonio }}</td>
+			<td>
+			<ul>{% for matrimonio in persona.id_matrimonio %}
+				<li>
+					{{matrimonio.apellido_matrimonio}}
+				</li>
+				{% endfor %}
+			</ul>
+    		</td>
+			<td>
+				<a class="btn btn-primary" href="{% url 'persona:persona_editar' p.id%}">Editar</a>
+				<a class="btn btn-danger" href="{% url 'persona:persona_eliminar' p.id%}">Eliminar</a>
+			</td>
+		</tr>
+		{% endfor %}
+
+		{% else %}
+		<h1>No hay registros de persona</h1>
+		{% endif %}
+	</tbody>
+</table>
+<ul class="pager">
+	<li>
+		{% if page_obj.has_previous %}
+       	 <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+
+		{% endif %}
+  </li>
+	<li>
+		{% if page_obj.has_next %}
+     	 <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+			 
+    	{% endif %}
+  </li>
+</ul>
+{% endblock%}

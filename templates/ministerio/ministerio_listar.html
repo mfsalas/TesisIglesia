@@ -1,0 +1,51 @@
+{% extends 'base/base.html' %}
+{% block title %}
+	Listado de Ministerios
+{% endblock %}
+
+{% block content %}
+
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<td>Nombre de Ministerio</td>
+			<td>Dia de la actividad</td>
+			<td>Lugar de la actividad</td>
+			<td>Hora de la actividad</td>
+		</tr>
+	</thead>
+	<tbody>
+		{% if object_list %}
+		{% for p in object_list %}
+		<tr>
+			<td>{{ p.nombre_ministerio }}</td>
+			<td>{{ p.dia_actividad }}</td>
+			<td>{{ p.lugar_actividad }}</td>
+			<td>{{ p.hora_actividad }}</td>
+			<td>
+				<a class="btn btn-primary" href="{% url 'ministerio:ministerio_editar' p.id%}">Editar</a>
+				<a class="btn btn-danger" href="{% url 'ministerio:ministerio_eliminar' p.id%}">Eliminar</a>
+			</td>
+		</tr>
+		{% endfor %}
+
+		{% else %}
+		<h1>No hay Ministerios Registrados</h1>
+		{% endif %}
+	</tbody>
+</table>
+<ul class="pager">
+	<li>
+		{% if page_obj.has_previous %}
+       	 <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+
+		{% endif %}
+  </li>
+	<li>
+		{% if page_obj.has_next %}
+     	 <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+
+    	{% endif %}
+  </li>
+</ul>
+{% endblock%}

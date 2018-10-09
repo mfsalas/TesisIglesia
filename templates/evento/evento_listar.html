@@ -1,0 +1,51 @@
+{% extends 'base/base.html' %}
+{% block title %}
+	Listado de Eventos
+{% endblock %}
+
+{% block content %}
+
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<td>Nombre del evento</td> <!--evento equivale a actividad especial-->
+			<td>Dia del evento</td>
+			<td>Lugar del evento</td>
+			<td>Hora del evento</td>
+		</tr>
+	</thead>
+	<tbody>
+		{% if object_list %}
+		{% for p in object_list %}
+		<tr>
+			<td>{{ p.descripcion_evento }}</td>
+			<td>{{ p.fecha_evento }}</td>
+			<td>{{ p.lugar_evento }}</td>
+			<td>{{ p.hora_evento }}</td>
+			<td>
+				<a class="btn btn-primary" href="{% url 'evento:evento_editar' p.id%}">Editar</a>
+				<a class="btn btn-danger" href="{% url 'evento:evento_eliminar' p.id%}">Eliminar</a>
+			</td>
+		</tr>
+		{% endfor %}
+
+		{% else %}
+		<h1>No hay Eventos Registrados</h1>
+		{% endif %}
+	</tbody>
+</table>
+<ul class="pager">
+	<li>
+		{% if page_obj.has_previous %}
+       	 <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+
+		{% endif %}
+  </li>
+	<li>
+		{% if page_obj.has_next %}
+     	 <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+
+    	{% endif %}
+  </li>
+</ul>
+{% endblock%}

@@ -1,0 +1,59 @@
+{% extends 'base/base.html' %}
+{% block title %}
+	Listado de Articulos
+{% endblock %}
+
+{% block content %}
+
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<td>Descripcion Articulo</td>
+			<td>Cantidad</td>
+			<td>Unidad de Medida</td>
+			<td>Precio Articulo</td>
+		</tr>
+	</thead>
+	<tbody>
+		{% if object_list %}
+		{% for p in object_list %}
+		<tr>
+			<td>{{ p.descripcion_articulo }}</td>
+			<td>{{ p.cantidad_articulo }}</td>
+			<td>{{ p.id_unidad_de_medida.nombre_unidad }}</td>
+			<td>{{ p.precio_Compra_articulo}}</td>
+			<td>
+			<ul>{% for unidad_de_medida in articulo.id_articulo %}
+				<li>
+					{{unidad_de_medida.nombre_unidad}}
+				</li>
+				{% endfor %}
+			</ul>
+    		</td>
+			<td>
+				<a class="btn btn-primary" href="{% url 'articulo:articulo_editar' p.id%}">Editar</a>
+				<a class="btn btn-danger" href="{% url 'articulo:articulo_eliminar' p.id%}">Eliminar</a>
+			</td>
+		</tr>
+		{% endfor %}
+
+		{% else %}
+		<h1>No hay Articulos Registrados</h1>
+		{% endif %}
+	</tbody>
+</table>
+<ul class="pager">
+	<li>
+		{% if page_obj.has_previous %}
+       	 <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+
+		{% endif %}
+  </li>
+	<li>
+		{% if page_obj.has_next %}
+     	 <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+
+    	{% endif %}
+  </li>
+</ul>
+{% endblock%}

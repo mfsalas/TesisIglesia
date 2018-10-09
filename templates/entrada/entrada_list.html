@@ -1,0 +1,52 @@
+{% extends 'base/base.html' %}
+{% block title %}
+	Listado de Entradas
+{% endblock %}
+
+{% block content %}
+
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<td>Articulo</td>
+			<td>Ministerio</td>
+			<td>Cantidad de Entradas</td>
+			<td>Fecha de Entrada</td>
+			<td>Observaciones</td>
+		</tr>
+	</thead>
+	<tbody>
+		{% if object_list %}
+		{% for p in object_list %}
+		<tr>
+			<td>{{ p.id_articulo.descripcion_articulo }}</td>
+			<td>{{ p.id_ministerio.nombre_ministerio }}</td>
+			<td>{{ p.cantidad_entrada }}</td>
+			<td>{{ p.fecha_entrada }}</td>
+			<td>{{ p.observaciones_entrada }}</td>
+			<td>
+
+    		</td>
+		</tr>
+		{% endfor %}
+
+		{% else %}
+		<h1>No hay Entradas Registradas</h1>
+		{% endif %}
+	</tbody>
+</table>
+<ul class="pager">
+	<li>
+		{% if page_obj.has_previous %}
+       	 <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+
+		{% endif %}
+  </li>
+	<li>
+		{% if page_obj.has_next %}
+     	 <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+
+    	{% endif %}
+  </li>
+</ul>
+{% endblock%}

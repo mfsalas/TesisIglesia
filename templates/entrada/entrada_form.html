@@ -1,0 +1,28 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+	Alta Entrada
+{% endblock %}
+
+{% block content %}
+<div class="mb-2">
+<form method="post">
+	{% csrf_token %}
+	{% include 'includes/form.html' %}
+	<button class="btn btn-default" type="submit">Registrar</button>
+	<a class="btn btn-default" href="{% url 'persona:index' %}">Cancelar</a>
+
+
+</form>
+</div>
+{% endblock %}
+{% block extrajs %}
+<script>
+	$('#id_fecha_entrada').datepicker({
+			todayBtn: "linked",
+	    dateFormat: 'dd/mm/yy',
+			language: "es",
+	})
+
+</script>
+{% endblock %}

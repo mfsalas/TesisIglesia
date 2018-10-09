@@ -1,0 +1,76 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+	Alta Persona
+{% endblock %}
+
+{% block content %}
+<div class="mb-2">
+<form method="post" id="alta_persona">
+	{% csrf_token %}
+	{% include 'includes/form.html' %}
+	<button class="btn btn-default" type="submit">Registrar</button>
+	<a class="btn btn-default" href="{% url 'persona:index' %}">Cancelar</a>
+</form>
+<a onclick="return modal('{% url 'matrimonio:matrimonio_crear' %}')" class="btn btn-default">Registrar Matrimonio</a>
+</div>
+
+<div id="popup" class="modal">
+	<!-- Modal para eliminar-->
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Registrar Matrimonio</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						&times;
+					</button>
+				</div>
+
+				<div class="modal-body" id="modal-body">
+
+				</div>
+			</div>
+		</div>
+	<!-- Modal para eliminar-->
+</div>
+{% endblock %}
+{% block extrajs %}
+<script>
+	$('#id_fecha_nacimiento').datepicker({
+		todayBtn: "linked",
+		format: 'dd-mm-yyyy',
+		endDate: '0d',
+		language: 'es',
+	})
+
+	function abrir_modal(){
+    $('#popup').modal('show');
+    return false;
+	}
+
+	function cerrar_modal(){
+  	$('#popup').modal('hide');
+  	return false;
+	}
+
+	function modal(direccion) {
+    $.ajax({
+       type: 'GET',
+       url: direccion,
+       data: {
+         'csrfmiddlewaretoken': '{{ csrf_token }}',
+       },
+       success: function(data) {
+         abrir_modal();
+         $('#modal-body').html(data);
+       },
+       error: function(data) {
+          console.log(data);
+       }
+     });
+  }
+
+
+
+</script>
+{% endblock %}
