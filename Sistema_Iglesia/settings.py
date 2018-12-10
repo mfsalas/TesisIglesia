@@ -92,9 +92,9 @@ WSGI_APPLICATION = 'Sistema_Iglesia.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'SistemaIJME',
-        'USER': 'postgres',
-        'PASSWORD': 'Nefasi65',
+        'NAME': 'sistemaiglesia',
+        'USER': 'msalas',
+        'PASSWORD': 'mauro',
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -148,7 +148,7 @@ STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 LOGIN_REDIRECT_URL = reverse_lazy('persona:index')
 LOGOUT_REDIRECT_URL = reverse_lazy('login')
 
-
+DATE_INPUT_FORMATS = ('%d-%m-%Y',)
 
 
 

@@ -1,0 +1,17 @@
+{% extends 'persona/persona_list.html' %}
+
+{%block titulobaja%}
+	<td>Fecha Baja</td>
+{%endblock%}
+
+{%block campobaja%}
+	<td>{{ persona.fecha_baja_persona }}</td>
+{%endblock%}
+
+{%block prueba%}
+<a class="btn btn-primary" href="{% url 'persona:persona_restaurar' persona.id%}">Restaurar</a>
+{%endblock%}
+
+{% block botonfinal %}
+<a class="btn btn-danger" href="{% url 'persona:persona_listar' %}">Volver</a>
+{% endblock%}

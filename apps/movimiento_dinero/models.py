@@ -22,3 +22,4 @@ class Movimiento_Dinero(models.Model):
     id_evento = models.ForeignKey(Evento, null=True, blank=True, on_delete=models.CASCADE)
     id_matrimonio = models.ForeignKey(Matrimonio, null=True, blank=True, on_delete=models.CASCADE)
     id_ministerio = models.ForeignKey(Ministerios, null=True, blank=True, on_delete=models.CASCADE)
+    fecha_baja_movimiento_dinero = models.DateField(max_length=50, blank=True, null=True)
