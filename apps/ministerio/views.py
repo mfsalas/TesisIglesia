@@ -1,13 +1,15 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 
 # Create your views here.
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-import datetime
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView
+
 from apps.ministerio.models import Ministerios
 from apps.ministerio.forms import MinisteriosForm
 from apps.persona.models import Persona
+
+from .models import Ministerios
 
 def index_ministerio(request):
 	return HttpResponse("soy la pagina principal de la app adopcion")
@@ -23,18 +25,12 @@ def ministerio_view(request):
     return render(request, 'ministerio/ministerio_form.html', {'form':form})
 
 def ministerio_list(request):
-	ministerio = Ministerios.objects.filter(fecha_baja_ministerio__isnull=True)
-	print('a')
-	contexto = {'ministerios':ministerio}
+	ministerio = Ministerio.objects.all().order_by('id')
+	contexto = {'ministerio':ministerio}
 	return render(request, 'ministerio/ministerio_listar.html', contexto)
 
-def ministerio_list_baja(request):
-	ministerio = Ministerios.objects.filter(fecha_baja_ministerio__isnull=False)
-	contexto = {'ministerios':ministerio}
-	return render(request, 'ministerio/ministerio_listar_baja.html', contexto)
-
-def ministerio_edit(request, pk):
-    ministerio = Ministerios.objects.get(id=pk)
+def ministerio_edit(request, id_ministerio):
+    ministerio = Ministerio.objects.get(id=id_ministerio)
     if request.method == 'GET':
         form = MinisteriosForm(instance=ministerio)
     else:
@@ -44,18 +40,43 @@ def ministerio_edit(request, pk):
             return redirect('ministerio:ministerio_listar')
     return render(request,'ministerio/ministerio_form.html',{'form':form})
 
-def ministerio_delete(request, pk):
-    ministerio = Ministerios.objects.get(id=pk)
+def ministerio_delete(request, id_ministerio):
+    ministerio = Ministerio.objects.get(id=id_ministerio)
     if request.method == 'POST':
-	    ministerio.fecha_baja_ministerio = datetime.date.today()
-	    ministerio.save()
-	    return redirect('ministerio:ministerio_listar')
+        ministerio.delete()
+        return redirect('ministerio:ministerio_listar')
     return render(request,'ministerio/ministerio_delete.html',{'ministerio':ministerio})
 
-def ministerio_restore(request, pk):
-    ministerio = Ministerios.objects.get(id=pk)
-    if request.method == 'GET':
-        ministerio.fecha_baja_ministerio = None
-        ministerio.save()
-        return redirect('ministerio:ministerio_listar')
-    return redirect('ministerio:ministerio_listar_baja')
+
+
+
+class MinisterioList(ListView):
+	model = Ministerios
+	template_name = 'ministerio/ministerio_listar.html'
+	paginate_by = 3
+
+class MinisterioCreate(CreateView):
+	model = Ministerios
+	template_name = 'ministerio/ministerio_form.html'
+	form_class = MinisteriosForm
+	success_url = reverse_lazy('ministerio:ministerio_listar')
+
+class MinisterioUpdate(UpdateView):
+	model = Ministerios
+	second_model = Persona
+	template_name = 'ministerio/ministerio_form.html'
+	form_class = MinisteriosForm
+	success_url = reverse_lazy('ministerio:ministerio_listar')
+
+
+class MinisterioDelete(DeleteView):
+	model = Ministerios
+	template_name = 'ministerio/ministerio_delete.html'
+	success_url = reverse_lazy('ministerio:ministerio_listar')
+
+class BuscarView(TemplateView):
+    def post(self, request, *args, **kwargs):
+        buscar = request.POST['buscalo']
+        ministerios = Ministerios.objects.filter(nombre_ministerio__contains=buscar)
+        return render(request,'ministerio/buscar.html',
+        {'ministerios':ministerios, 'min' : True})

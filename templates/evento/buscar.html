@@ -1,0 +1,60 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<!--boton buscar ---->
+<div class = "busqueda">
+	<form class = "navbar-search pull-left" method
+	="POST" action="/evento/buscar/">{% csrf_token %}
+
+		<input type="text" name="buscalo" class="search-query"
+		placeholder="Buscar">
+		<div class="btn-group">
+				<button class="btn btn-primary" type
+				="sumbit"><i class="icon-search"></i
+				></button>
+		</div>
+	</form>
+</div>
+<!--fin boton buscar ---->
+
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<td>descripcion del evento</td>
+			<td>fecha del evento</td>
+			<td>lugar del evento</td>
+			<td>hora del evento</td>
+		</tr>
+	</thead>
+	<tbody>
+		{% if eve %}
+	    {% for eve in eventos %}
+	     	<tr>
+        	<td>{{ eve.descripcion_evento }}</td>
+        	<td>{{ eve.fecha_evento }}</td>
+					<td>{{ eve.lugar_evento }}</td>
+					<td>{{ eve.hora_evento }}</td>
+      	</tr>
+	    {% endfor %}
+      {% else %}
+  	<h1>No hay eventos registrados</h1>    <!-- ver esto ---->
+  {% endif %}
+  	</tbody>
+  </table>
+  <ul class="pager">
+  	<li>
+  		{% if page_obj.has_previous %}
+         	 <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+
+  		{% endif %}
+    </li>
+  	<li>
+  		{% if page_obj.has_next %}
+       	 <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+
+      	{% endif %}
+    </li>
+  </ul>
+
+  {% endblock%}

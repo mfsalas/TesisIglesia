@@ -9,11 +9,11 @@ class Movimiento_DineroForm(forms.ModelForm):
 
         fields = [
             'fecha_movimiento',
-            'tipo_movimiento',
             'clase_movimiento',
+            'descripcion_movimiento',
             'monto_movimiento',
             'id_categoria',
-            'descripcion_movimiento',
+#            'tipo_movimiento',
             'id_persona',
             'id_evento',
             'id_matrimonio',
@@ -21,11 +21,11 @@ class Movimiento_DineroForm(forms.ModelForm):
         ]
         labels = {
             'fecha_movimiento': 'Fecha Movimiento',
-            'tipo_movimiento': 'Tipo de Movimiento',
-            'clase_movimiento': 'Clase de Movimiento',
+            'clase_movimiento': 'Fijo/Eventual',
+            'descripcion_movimiento': 'Descripcion',
             'monto_movimiento': 'Monto',
             'id_categoria': 'Categoria',
-            'descripcion_movimiento': 'Descripcion',
+#            'tipo_movimiento' : "Tipo movimiento",
             'id_persona': 'Autor',
             'id_evento': 'Evento',
             'id_matrimonio': 'Matrimonio',
@@ -36,8 +36,10 @@ class CategoriaForm(forms.ModelForm):
     class Meta:
         model = Categoria
         fields = [
+                'tipo_movimiento',
                 'nombre_categoria'
         ]
         labels = {
-                'nombre_categoria':'Nombre Categoria'
+                'tipo_movimiento': 'Ingreso/Egreso',
+                'nombre_categoria':'Nombre Categoria',
         }

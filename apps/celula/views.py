@@ -3,11 +3,13 @@ from django.shortcuts import render
 # Create your views here.
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView
 
 from apps.celula.models import Celula
 from apps.celula.forms import CelulaForm
 #from apps.persona.models import Persona # en apps\ministerio\views tambien esta
+
+from .models import Celula
 
 def index_celula(request):
 	return HttpResponse("soy la pagina principal de la app adopcion")
@@ -71,3 +73,12 @@ class CelulaDelete(DeleteView):
 	model = Celula
 	template_name = 'celula/celula_delete.html'
 	success_url = reverse_lazy('celula:celula_listar')
+
+
+
+class BuscarView(TemplateView):
+    def post(self, request, *args, **kwargs):
+        buscar = request.POST['buscalo']
+        celulas = Celula.objects.filter(dia_celula__contains=buscar)
+        return render(request,'celula/buscar.html',
+        {'celulas':celulas, 'celu' : True})

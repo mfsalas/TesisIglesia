@@ -15,6 +15,13 @@ class PersonaForm(forms.ModelForm):
             'celular',
             'direccion',
             'id_matrimonio',
+            'localidad',
+            'estado_civil',
+            'profesion',
+            'bautizado',
+            'escuela_biblica',
+            'encuentro',
+
         ]
         labels = {
             'nombre': 'Nombre',
@@ -24,6 +31,13 @@ class PersonaForm(forms.ModelForm):
             'celular': 'Celular',
             'direccion': 'Direccion',
             'id_matrimonio': 'Matrimonio',
+            'localidad': 'Localidad',
+            'estado_civil':'Estado civil',
+            'profesion': 'Profesión',
+            'bautizado': 'Bautizado',
+            'escuela_biblica': 'Escuela bíblica',
+            'encuentro': 'Encuentro',
+
         }
 
 class MatrimonioForm(forms.ModelForm):
