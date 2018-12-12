@@ -5,63 +5,47 @@
 
 {% block content %}
 
-<!--boton buscar ---->
-<div class = "busqueda">
-	<form class = "navbar-search pull-left" method
-	="POST" action="/movimiento/buscar/">{% csrf_token %}
-
-		<input type="text" name="buscalo" class="search-query"
-		placeholder="Buscar">
-		<div class="btn-group">
-				<button class="btn btn-primary" type
-				="sumbit"><i class="icon-search"></i
-				></button>
-		</div>
-	</form>
-</div>
-<!--fin boton buscar ---->
-
 <table class="table table-bordered">
 	<thead>
 		<tr>
 			<td>Fecha Movimiento</td>
+			<td>Tipo Movimiento</td>
 			<td>Clase</td>
-			<td>Descripcion</td>
 			<td>Monto</td>
 			<td>Categoria</td>
-			<td>Tipo movimiento</td>
+			<td>Descripcion</td>
 			<td>Autor</td>
 			<td>Evento</td>
 			<td>Matrimonio</td>
 			<td>Ministerio</td>
+			{%block titulobaja%}
+			{%endblock%}
+			<td>Opciones</td>
 		</tr>
 	</thead>
 	<tbody>
-		{% if object_list %}
-		{% for p in object_list %}
+		{% if movimientos %}
+		{% for movimiento in movimientos %}
 		<tr>
-			<td>{{ p.fecha_movimiento }}</td>
-			<td>{{ p.clase_movimiento }}</td>
-			<td>{{ p.descripcion_movimiento }}</td>
-			<td>{{ p.monto_movimiento }}</td>
-			<td>{{ p.id_categoria.nombre_categoria }}</td>
-			<td>{{ p.id_categoria.tipo_movimiento }}</td>
-      <td>{{ p.id_persona.nombre }} {{ p.id_persona.apellido_persona }}</td>
-			<td>{{ p.id_evento.descripcion_evento }} {{ p.id_evento.fecha_evento }}</td>
-			<td>{{ p.id_matrimonio.apellido_matrimonio }}</td>
-			<td>{{ p.id_ministerio.nombre_ministerio }}</td>
+			<td>{{ movimiento.fecha_movimiento }}</td>
+			<td>{{ movimiento.tipo_movimiento }}</td>
+			<td>{{ movimiento.clase_movimiento }}</td>
+			<td>{{ movimiento.monto_movimiento }}</td>
+			<td>{{ movimiento.id_categoria.nombre_categoria }}</td>
+      <td>{{ movimiento.descripcion_movimiento }}</td>
+			<td>{{ movimiento.id_persona.nombre }} {{ p.id_persona.apellido_persona }}</td>
+			<td>{{ movimiento.id_evento.descripcion_evento }} {{ p.id_evento.fecha_evento }}</td>
+			<td>{{ movimiento.id_matrimonio.apellido_matrimonio }}</td>
+			<td>{{ movimiento.id_ministerio.nombre_ministerio }}</td>
+			{%block campobajamovimiento%}
+			{%endblock%}
 			<td>
-	<!--		<ul>{% for categoria in movimiento_dinero.id_movimiento %}
-				<li>
-					{{categoria.nombre_categoria}}
-				</li>
-				{% endfor %}
-			</ul>
- 		---->
-    		</td>
-			<td>
-				<a class="btn btn-primary" href="{% url 'movimiento:movimiento_editar' p.id%}">Editar</a>
-				<a class="btn btn-danger" href="{% url 'movimiento:movimiento_eliminar' p.id%}">Eliminar</a>
+				{% if movimiento.fecha_baja_movimiento_dinero = null %}
+					<a class="btn btn-primary" href="{% url 'movimiento:movimiento_editar' movimiento.id%}">Editar</a>
+					<a class="btn btn-danger" href="{% url 'movimiento:movimiento_eliminar' movimiento.id%}">Baja Movimiento</a>
+				{%endif%}
+				{%block pruebamovimiento%}
+				{%endblock%}
 			</td>
 		</tr>
 		{% endfor %}
@@ -85,4 +69,7 @@
     	{% endif %}
   </li>
 </ul>
+{%block botonfinalmovimiento%}
+<a class="btn btn-danger" href="{% url 'movimiento:movimiento_listar_baja' %}">Mostrar movimientos dados de baja</a>
+{%endblock%}
 {% endblock%}

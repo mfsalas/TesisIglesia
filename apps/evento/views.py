@@ -3,13 +3,11 @@ from django.shortcuts import render
 # Create your views here.
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
 from apps.evento.models import Evento
 from apps.evento.forms import EventoForm
 #from apps.persona.models import Persona # en apps\ministerio\views tambien esta
-
-from .models import Evento
 
 def index_evento(request):
 	return HttpResponse("soy la pagina principal de la app adopcion")
@@ -73,11 +71,3 @@ class EventoDelete(DeleteView):
 	model = Evento
 	template_name = 'evento/evento_delete.html'
 	success_url = reverse_lazy('evento:evento_listar')
-
-
-class BuscarView(TemplateView):
-    def post(self, request, *args, **kwargs):
-        buscar = request.POST['buscalo']
-        eventos = Evento.objects.filter(descripcion_evento__contains=buscar)
-        return render(request,'evento/buscar.html',
-        {'eventos':eventos, 'eve' : True})

@@ -1,14 +1,13 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
 from apps.inventario.models import Unidadad_de_Medida, Articulo
 from apps.inventario.forms import ArticuloForm, Unidadad_de_MedidaForm
 
 from apps.persona.models import Persona
 
-from .models import Articulo
 
 def index_articulo(request):
 	return HttpResponse("soy la pagina principal de la app adopcion")
@@ -133,11 +132,3 @@ class Unidadad_de_MedidaDelete(DeleteView):
 	model = Unidadad_de_Medida
 	template_name = 'unidad_de_medida/unidad_de_medida_delete.html'
 	success_url = reverse_lazy('unidad_de_medida:unidad_de_medida_listar')
-
-
-class BuscarView(TemplateView):
-    def post(self, request, *args, **kwargs):
-        buscar = request.POST['buscalo']
-        articulos = Articulo.objects.filter(descripcion_articulo__contains=buscar)
-        return render(request,'articulo/buscar.html',
-        {'articulos':articulos, 'art' : True})

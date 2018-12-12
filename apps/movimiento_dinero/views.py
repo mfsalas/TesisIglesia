@@ -1,15 +1,14 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView
-
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+import datetime
 from apps.movimiento_dinero.models import Categoria, Movimiento_Dinero
 from apps.movimiento_dinero.forms import Movimiento_DineroForm, CategoriaForm
 from apps.persona.forms import PersonaForm
 
 from apps.persona.models import Persona
 
-from .models import Movimiento_Dinero
 
 def index_movimiento(request):
 	return HttpResponse("soy la pagina principal de la app adopcion")
@@ -25,12 +24,17 @@ def movimiento_view(request):
     return render(request, 'movimiento_dinero/movimiento_dinero_form.html', {'form':form})
 
 def movimiento_list(request):
-	persona = Movimiento_Dinero.objects.all().order_by('id')
-	contexto = {'movimiento':movimiento}
+	movimiento = Movimiento_Dinero.objects.filter(fecha_baja_movimiento_dinero__isnull=True)
+	contexto = {'movimientos':movimiento}
 	return render(request, 'movimiento_dinero/movimiento_dinero_list.html', contexto)
 
-def movimiento_edit(request, id_movimiento):
-    movimiento = Movimiento_Dinero.objects.get(id=id_movimiento)
+def movimiento_list_baja(request):
+	movimiento = Movimiento_Dinero.objects.filter(fecha_baja_movimiento_dinero__isnull=False)
+	contexto = {'movimientos':movimiento}
+	return render(request, 'movimiento_dinero/movimiento_dinero_list_baja.html', contexto)
+
+def movimiento_edit(request, pk):
+    movimiento = Movimiento_Dinero.objects.get(id=pk)
     if request.method == 'GET':
         form = Movimiento_DineroForm(instance=movimiento)
     else:
@@ -40,39 +44,25 @@ def movimiento_edit(request, id_movimiento):
             return redirect('movimiento:movimiento_listar')
     return render(request,'movimiento_dinero/movimiento_dinero_form.html',{'form':form})
 
-def movimiento_delete(request, id_movimiento):
-    persona = Movimiento_Dinero.objects.get(id=id_movimiento)
-    if request.method == 'POST':
-        movimiento.delete()
+def movimiento_delete(request, pk):
+	movimiento = Movimiento_Dinero.objects.get(id=pk)
+	if request.method == 'POST':
+		movimiento.fecha_baja_movimiento_dinero = datetime.date.today()
+		movimiento.save()
+		return redirect('movimiento:movimiento_listar')
+	return render(request,'movimiento_dinero/movimiento_dinero_delete.html',{'movimiento':movimiento})
+
+def movimiento_restore(request, pk):
+    movimiento = Movimiento_Dinero.objects.get(id=pk)
+    if request.method == 'GET':
+        movimiento.fecha_baja_movimiento_dinero = None
+        movimiento.save()
         return redirect('movimiento:movimiento_listar')
-    return render(request,'movimiento_dinero/movimiento_dinero_delete.html',{'movimiento':movimiento})
+    return redirect('movimiento:movimiento_list_baja')
 
 
 
 
-class MovimientoList(ListView):
-	model = Movimiento_Dinero
-	template_name = 'movimiento_dinero/movimiento_dinero_list.html'
-	paginate_by = 3
-
-class MovimientoCreate(CreateView):
-	model = Movimiento_Dinero
-	template_name = 'movimiento_dinero/movimiento_dinero_form.html'
-	form_class = Movimiento_DineroForm
-	success_url = reverse_lazy('movimiento:movimiento_listar')
-
-class MovimientoUpdate(UpdateView):
-	model = Movimiento_Dinero
-	second_model = Persona
-	template_name = 'movimiento_dinero/movimiento_dinero_form.html'
-	form_class = Movimiento_DineroForm
-	success_url = reverse_lazy('movimiento:movimiento_listar')
-
-
-class MovimientoDelete(DeleteView):
-	model = Movimiento_Dinero
-	template_name = 'movimiento_dinero/movimiento_dinero_delete.html'
-	success_url = reverse_lazy('movimiento:movimiento_listar')
 
 #Categorias
 def categoria_view(request):
@@ -134,10 +124,3 @@ class CategoriaDelete(DeleteView):
 	model = Categoria
 	template_name = 'categoria/categoria_delete.html'
 	success_url = reverse_lazy('categoria:categoria_listar')
-
-class BuscarView(TemplateView):
-    def post(self, request, *args, **kwargs):
-        buscar = request.POST['buscalo']
-        movimientos = Movimiento_Dinero.objects.filter(fecha_movimiento__contains=buscar)
-        return render(request,'movimiento_dinero/buscar.html',
-        {'movimientos':movimientos, 'movi' : True})

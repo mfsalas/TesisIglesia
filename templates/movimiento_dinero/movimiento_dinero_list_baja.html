@@ -1,0 +1,17 @@
+{% extends 'movimiento_dinero/movimiento_dinero_list.html' %}
+
+{%block titulobaja%}
+	<td>Fecha Baja</td>
+{%endblock%}
+
+{%block campobajamovimiento%}
+	<td>{{ movimiento.fecha_baja_movimiento_dinero }}</td>
+{%endblock%}
+
+{%block pruebamovimiento%}
+<a class="btn btn-primary" href="{% url 'movimiento:movimiento_restaurar' movimiento.id%}">Restaurar</a>
+{%endblock%}
+
+{% block botonfinalmovimiento %}
+<a class="btn btn-danger" href="{% url 'movimiento:movimiento_listar' %}">Volver</a>
+{% endblock%}

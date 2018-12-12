@@ -3,8 +3,7 @@ from django.contrib.auth.views import login_required
 
 from apps.inventario.views import index_articulo, ArticuloList, ArticuloCreate, ArticuloUpdate, \
 	ArticuloDelete, articulo_view, articulo_list, articulo_edit, articulo_delete, \
-	Unidadad_de_MedidaList, Unidadad_de_MedidaCreate, Unidadad_de_MedidaUpdate, Unidadad_de_MedidaDelete, unidad_de_medida_view, \
-	unidad_de_medida_list, unidad_de_medida_edit, unidad_de_medida_delete, BuscarView
+	Unidadad_de_MedidaList, Unidadad_de_MedidaCreate, Unidadad_de_MedidaUpdate, Unidadad_de_MedidaDelete, unidad_de_medida_view, unidad_de_medida_list, unidad_de_medida_edit, unidad_de_medida_delete
 
 urlpatterns = [
     url(r'^index$', index_articulo),
@@ -16,6 +15,5 @@ urlpatterns = [
     url(r'^listar_unidad_de_medida$', login_required(Unidadad_de_MedidaList.as_view()), name='unidad_de_medida_listar'),
     url(r'^editar_unidad_de_medida/(?P<pk>\d+)/$', login_required(Unidadad_de_MedidaUpdate.as_view()), name='unidad_de_medida_editar'),
     url(r'^eliminar_unidad_de_medida/(?P<pk>\d+)/$', login_required(Unidadad_de_MedidaDelete.as_view()), name='unidad_de_medida_eliminar'),
-	url(r'^buscar/$', BuscarView.as_view(),name='buscar'),
-	
+
 ]
