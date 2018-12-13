@@ -19,6 +19,9 @@ from apps.persona import views
 from apps.ministerio import views
 from apps.usuario import views
 from apps.evento import views
+from apps.movimiento_dinero import views
+from apps.celula import views
+from apps.discipulado import views
 from django.contrib.auth.views import login, logout_then_login, password_reset, password_reset_done, password_reset_confirm, password_reset_complete
 from apps.usuario.views import RegistroUsuario
 
@@ -30,10 +33,12 @@ urlpatterns = [
     url(r'^categoria/', include('apps.movimiento_dinero.urls', namespace='categoria')),
     url(r'^ministerio/', include('apps.ministerio.urls', namespace='ministerio')),
     url(r'^evento/', include('apps.evento.urls', namespace='evento')),
+    url(r'^celula/', include('apps.celula.urls', namespace='celula')),
     url(r'^articulo/', include('apps.inventario.urls', namespace='articulo')),
     url(r'^unidad_de_medida/', include('apps.inventario.urls', namespace='unidad_de_medida')),
     url(r'^entrada/', include('apps.entrada.urls', namespace='entrada')),
     url(r'^salida/', include('apps.salida.urls', namespace='salida')),
+    url(r'^discipulado/', include('apps.discipulado.urls', namespace='discipulado')),
     url(r'^usuario/', include('apps.usuario.urls', namespace='usuario')),
     url(r'^accounts/login/', login, {'template_name':'index.html'}, name='login'),
     url(r'^logout/', logout_then_login, name='logout'),

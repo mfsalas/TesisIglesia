@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'apps.inventario',
     'apps.entrada',
     'apps.salida',
+    'apps.celula',
+    'apps.discipulado',
 
 
     'widget_tweaks',
@@ -148,7 +150,7 @@ STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 LOGIN_REDIRECT_URL = reverse_lazy('persona:index')
 LOGOUT_REDIRECT_URL = reverse_lazy('login')
 
-DATE_INPUT_FORMATS = ('%d-%m-%Y',)
+
 
 
 

@@ -5,13 +5,29 @@
 
 {% block content %}
 
+<!--boton buscar ---->
+<div class = "busqueda">
+	<form class = "navbar-search pull-left" method
+	="POST" action="/celula/buscar/">{% csrf_token %}
+
+		<input type="text" name="buscalo" class="search-query"
+		placeholder="Buscar">
+		<div class="btn-group">
+				<button class="btn btn-primary" type
+				="sumbit"><i class="icon-search"></i
+				></button>
+		</div>
+	</form>
+</div>
+<!--fin boton buscar ---->
+
 <table class="table table-bordered">
-	<thead>
+	<thead> <td>Datos de la célula</td>
 		<tr>
-			 <!-- <td>Nombre del evento</td> la celula no tiene un nombre identificatorio-->
-			<td>Dia de la celula</td>
-			<td>Direccion de la celula</td>
-			<td>Hora de la celula</td>
+			<td>Dia</td>
+			<td>Direccion</td>
+			<td>Horario</td>
+			<td>Encargado</td>
 		</tr>
 	</thead>
 	<tbody>
@@ -21,6 +37,7 @@
 			<td>{{ p.dia_celula }}</td>
 			<td>{{ p.direccion_celula }}</td>
 			<td>{{ p.hora_celula }}</td>
+			<td>{{ p.encargado_celula }}</td>
 			<td>
 				<a class="btn btn-primary" href="{% url 'celula:celula_editar' p.id%}">Editar</a>
 				<a class="btn btn-danger" href="{% url 'celula:celula_eliminar' p.id%}">Eliminar</a>
@@ -33,6 +50,34 @@
 		{% endif %}
 	</tbody>
 </table>
+
+<!--tabla de miembros ---->
+<table class="table table-bordered">
+	<thead><td>Miembros de la célula</td>
+		<tr>
+			<td>Nombre</td>
+			<td>Rol</td>
+		</tr>
+	</thead>
+	<tbody>
+		{% if object_list %}
+		{% for p in object_list %}
+		<tr>
+			<td>{{ p.miembro }}</td>
+			<!--<td>{{ p.rol }}</td>-->
+			<td>
+				<a class="btn btn-danger" href="{% url 'celula:celula_eliminar' p.id%}">Eliminar</a>
+			</td>
+		</tr>
+		{% endfor %}
+
+		{% else %}
+		<h1>No hay Miembros Registrados</h1>
+		{% endif %}
+	</tbody>
+</table>
+<!--fin tabla de miembros ---->
+
 <ul class="pager">
 	<li>
 		{% if page_obj.has_previous %}

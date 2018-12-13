@@ -5,6 +5,22 @@
 
 {% block content %}
 
+<!--boton buscar ---->
+<div class = "busqueda">
+	<form class = "navbar-search pull-left" method
+	="POST" action="/evento/buscar/">{% csrf_token %}
+
+		<input type="text" name="buscalo" class="search-query"
+		placeholder="Buscar">
+		<div class="btn-group">
+				<button class="btn btn-primary" type
+				="sumbit"><i class="icon-search"></i
+				></button>
+		</div>
+	</form>
+</div>
+<!--fin boton buscar ---->
+
 <table class="table table-bordered">
 	<thead>
 		<tr>

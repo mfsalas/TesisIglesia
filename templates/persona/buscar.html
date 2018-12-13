@@ -1,0 +1,86 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<!--boton buscar ---->
+<div class = "busqueda">
+	<form class = "navbar-search pull-left" method
+	="POST" action="/persona/buscar/">{% csrf_token %}
+
+		<input type="text" name="buscalo" class="search-query"
+		placeholder="Buscar">
+		<div class="btn-group">
+				<button class="btn btn-primary" type
+				="sumbit"><i class="icon-search"></i
+				></button>
+		</div>
+	</form>
+</div>
+<!--fin boton buscar ---->
+
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<td>Nombre</td>
+			<td>Apellido</td>
+			<td>Fecha de Nacimiento</td>
+			<td>Sexo</td>
+			<td>Celular</td>
+			<td>Direccion</td>
+			<td>Matrimonio</td>
+			<td>Localidad</td>
+			<td>Estado Civil</td>
+			<td>Profesión</td>
+			<td>Bautizado</td>
+			<td>Escuela Bíblica</td>
+			<td>Encuentro</td>
+		</tr>
+	</thead>
+	<tbody>
+  {% if perso %}
+      {% for perso in personas %}
+      	<tr>
+          <td>{{ perso.nombre }}</td>
+          <td>{{ perso.apellido_persona }}</td>
+          <td>{{ perso.fecha_nacimiento }}</td>
+          <td>{{ perso.sexo }}</td>
+          <td>{{ perso.celular }}</td>
+          <td>{{ perso.direccion }}</td>
+          <td>{{ perso.id_matrimonio.apellido_matrimonio }}</td>
+          <!-- hace falta?
+          <ul>{% for matrimonio in persona.id_matrimonio %}
+    				<li>
+    					{{matrimonio.apellido_matrimonio}}
+    				</li>
+              {% endfor %}
+          </ul>
+           ---->
+					 <td>{{ p.localidad }}</td>
+					 <td>{{ p.estado_civil }}</td>
+					 <td>{{ p.profesion }}</td>
+					 <td>{{ p.bautizado }}</td>
+					 <td>{{ p.escuela_biblica }}</td>
+					 <td>{{ p.encuentro }}</td>
+      	</tr>
+      {% endfor %}
+      {% else %}
+  	<h1>No hay registros de personas</h1>    <!-- ver esto ---->
+  {% endif %}
+  	</tbody>
+  </table>
+  <ul class="pager">
+  	<li>
+  		{% if page_obj.has_previous %}
+         	 <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+
+  		{% endif %}
+    </li>
+  	<li>
+  		{% if page_obj.has_next %}
+       	 <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+
+      	{% endif %}
+    </li>
+  </ul>
+
+  {% endblock%}
